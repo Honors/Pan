@@ -12,6 +12,17 @@ var aBoundParser = function(x) {
 assert.equal(aBoundParser("a").success, true);
 assert.equal(aBoundParser("b").success, false);
 
+var aBindsParser = function(x) {
+  return P.binds(P.unit(x), P.parseChar("a"));
+};
+var aBindsParser2 = function(x) {
+  return P.binds(P.unit(x), P.parseChar("a"), P.parseChar("b"));
+};
+assert.equal(aBindsParser("a").success, true);
+assert.equal(aBindsParser("b").success, false);
+assert.equal(aBindsParser2("ab").success, true);
+assert.equal(aBindsParser2("bb").success, false);
+
 var abParser = function(x) {
   return P.bind(P.bind(P.unit(x), P.parseChar("a")), P.parseChar("b"));
 };

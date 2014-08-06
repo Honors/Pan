@@ -47,17 +47,20 @@ var parseString = P.parseString = function(cs) {
     return cs.split("").map(parseChar).reduce(bind, unit(t));
   };
 };
+var binds = P.binds = function() {
+  var xs = [].slice.call(arguments);
+  return xs.reduce(bind);
+};
 
 var parse = P.parse = Try(
+  // TODO: parse an AST which can then easily be evaluated.
   function(x) {
-    return bind(
-      bind(
-	bind(
-	  unit(x), parseChar("(")),
-	product(
-	  star(product(parse, parseChar(" "))),
-	  parse)),
-      parseChar(")")); },
+    return binds(
+      unit(x),
+      parseChar("("),
+      product(star(product(parse, parseChar(" "))), parse),
+      parseChar(")"));
+  },
   parseString("data"),
   parseString("Float"),
   parseString("Vector")
