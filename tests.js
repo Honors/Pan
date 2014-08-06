@@ -28,5 +28,9 @@ assert.equal(parseAs("a").success, true);
 assert.equal(parseAs("aa").success, true);
 assert.equal(parseAs("aab").full(), false);
 
+var body = fs.readFileSync(__dirname + "/test.pan") + "";
+assert.equal(P.parse(body).success, true);
+assert.equal(P.parse("").success, false);
+
 assert();
 

@@ -47,5 +47,21 @@ var parseString = P.parseString = function(cs) {
     return cs.split("").map(parseChar).reduce(bind, unit(t));
   };
 };
+
+var parse = P.parse = Try(
+  function(x) {
+    return bind(
+      bind(
+	bind(
+	  unit(x), parseChar("(")),
+	product(
+	  star(product(parse, parseChar(" "))),
+	  parse)),
+      parseChar(")")); },
+  parseString("data"),
+  parseString("Float"),
+  parseString("Vector")
+);
+
 module.exports = P;
 
